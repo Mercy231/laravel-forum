@@ -1,0 +1,72 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+}
+.content-login-reg {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.content-login-reg form {
+    min-width: 350px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+.content-login-reg input {
+    margin: 10px 0;
+}
+.content-login-reg button {
+    max-width: 100px;
+}
+.content-login-reg .errors {
+    padding: 20px 0;
+    height: 30px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.content .posts-area {
+    margin: 30px;
+    width: 55%;
+}
+.content .posts-area .post {
+    background-color: white;
+    min-height: 150px;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 20px;
+}
+.content .posts-area .post .username {
+    padding: 0 20px;
+}
+
+.content .createPost-area {
+    margin: 30px;
+    width: 55%;
+}
+.content .createPost-area textarea {
+    min-height: 300px;
+}
+.content .createPost-area button {
+    margin: 20px;
+}
+
+.content .editPost-area {
+    margin: 30px;
+    width: 55%;
+}
+.content .editPost-area textarea {
+    min-height: 300px;
+}
+.content .editPost-area button {
+    margin: 20px;
+}
