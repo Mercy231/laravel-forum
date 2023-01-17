@@ -43,8 +43,12 @@ Route::name('user.')->group(function (){
 
     Route::get('/editPost/{id}', [\App\Http\Controllers\PostController::class, 'editPostShow'])
         ->name('editPost');
-    Route::post('editPost/{id}', [\App\Http\Controllers\PostController::class, 'editPost']);
-
-    Route::get('/deletePost/{id}', [\App\Http\Controllers\PostController::class, 'deletePost'])
-        ->name('deletePost');
+//    Route::post('editPost/{id}', [\App\Http\Controllers\PostController::class, 'editPost']);
+    Route::post('/editPost', [\App\Http\Controllers\PostController::class, 'editPost']);
+//    Route::get('/deletePost/{id}', [\App\Http\Controllers\PostController::class, 'deletePost'])
+//        ->name('deletePost');
+    Route::post('/deletePost', [\App\Http\Controllers\PostController::class, 'deletePost']);
 });
+
+Route::get('/ajax', [\App\Http\Controllers\PostController::class, 'ajaxShow']);
+Route::post('/ajaxRequest', [\App\Http\Controllers\PostController::class, 'ajaxRequest']);

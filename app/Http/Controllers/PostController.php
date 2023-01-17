@@ -11,75 +11,43 @@ class PostController extends Controller
 {
     public function postsShow()
     {
-        $sql = Post::orderBy('updated_at', 'desc')->get()->toArray();
-        $posts = [];
-        foreach ($sql as $post) {
-            $post = (array)$post;
-            $post['username'] = User::find($post['user_id'])->username;
-            $posts [] = $post;
-        }
+        $posts = Post::latest()
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->select('posts.*', 'users.username')
+            ->get();
         return view('home', ['posts' => $posts]);
-    }
-
-    public function createPostShow()
-    {
-        if (!Auth::check()) {
-            return redirect('login');
-        }
-        return view('createPost');
     }
 
     public function createPost(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect('login');
-        }
-
-        $post = Post::create([
+        Post::create([
             'user_id' => Auth::user()->id,
-            'text' => $request->text
+            'text' => $request->userdata
         ]);
-        if (!$post) {
-            return redirect('createPost')->withErrors([
-                'createPostError' => 'Unexpected error creating post'
-            ]);
-        } else {
-            return redirect('home');
-        }
+         $post = Post::latest('created_at')
+             ->join('users', 'posts.user_id', '=', 'users.id')
+             ->select('posts.*', 'users.username')
+             ->first()
+             ->toArray();
+        return $post;
     }
 
-    public function editPostShow($id)
+    public function editPost(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect('login');
-        } elseif (Auth::user()->id !== Post::find($id)->user_id) {
-            return redirect('home');
-        }
-        $post = Post::find($id)->toArray();
-        return view('editPost', ['post' => $post]);
+        Post::where('id', '=', $request->postId)->update([
+            'text' => $request->userdata,
+        ]);
+        $post = Post::latest('updated_at')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->select('posts.*', 'users.username')
+            ->first()
+            ->toArray();
+        return $post;
     }
 
-    public function editPost($id, Request $request)
+    public function deletePost(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect('login');
-        } elseif (Auth::user()->id !== Post::find($id)->user_id) {
-            return redirect('home');
-        }
-        $post = Post::find($id);
-        $post->text = $request->text;
-        $post->save();
-        return redirect('home');
-    }
-
-    public function deletePost($id)
-    {
-        if (!Auth::check()) {
-            return redirect('login');
-        } elseif (Auth::user()->id !== Post::find($id)->user_id) {
-            return redirect('home');
-        }
-        $post = Post::find($id)->delete();
-        return redirect('home');
+        Post::find($request->postId)->delete();
+        return $request->postId;
     }
 }
